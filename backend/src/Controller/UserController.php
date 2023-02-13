@@ -16,10 +16,8 @@ class UserController extends AbstractController
     public function getAllUsers(ManagerRegistry $doctrine): JsonResponse
     {
         $users = $doctrine->getRepository(User::class)->findAll();
-        die();
-        // dd($users);
-        // return $this->json([
-        //     'users' => $users,
-        // ]);
+        return $this->json([
+            'users' => $users,
+        ]);
     }
 }

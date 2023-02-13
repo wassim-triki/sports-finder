@@ -9,7 +9,7 @@ function App() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const resp = await axios.get('http://localhost:8080/api/users');
+        const resp = await axios.get('https://localhost:8000/api/users');
         setData(resp.data);
       } catch (error) {
         throw error;
