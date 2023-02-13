@@ -1,9 +1,9 @@
-FROM node:18-alpine3.16 AS development
-ENV NODE_ENV development
+FROM node:18-alpine
 # Add a work directory
-WORKDIR /app
+WORKDIR /var/www/project/frontend
 # Cache and Install dependencies
-COPY package*.json .
+COPY package.json .
+COPY package-lock.json .
 RUN npm install
 # Copy app files
 COPY . .

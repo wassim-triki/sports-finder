@@ -1,0 +1,66 @@
+version: '3.8'
+networks:
+  project-network:
+services:
+  #react
+  react-service:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    # environment:
+    #   - CHOKIDAR_USEPOLLING=true
+    container_name: react-container
+    volumes:
+      - ./frontend:/var/www/project/frontend
+      # the volume above prevents our host system's node_modules to be mounted
+      - /var/www/project/frontend/node_modules/
+    ports:
+      - '3000:3000'
+    networks:
+      - project-network
+
+  #nginx
+  nginx-service:
+    image: nginx:stable-alpine
+    container_name: nginx-container
+    ports:
+      - '8080:80'
+    volumes:
+      - ./backend:/var/www/project/backend
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php74-service
+      - mysql8-service
+    networks:
+      - project-network
+
+  #php
+  php74-service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: php74-container
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./backend:/var/www/project/backend
+    networks:
+      - project-network
+
+  #mysql
+  mysql8-service:
+    image: mysql:8
+    container_name: mysql8-container
+    ports:
+      - '4306:3306'
+    volumes:
+      - db_app:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - project-network
+
+volumes:
+  db_app:
