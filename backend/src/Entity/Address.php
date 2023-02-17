@@ -33,8 +33,8 @@ class Address
     private $postalCode;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addresses")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="addresses",cascade={"persist","remove"})
+     * @ORM\JoinColumn(nullable=false,onDelete="CASCADE")
      */
     private $user;
 
