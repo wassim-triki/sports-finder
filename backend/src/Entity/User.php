@@ -18,25 +18,21 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("user")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * * @Groups("user")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * * @Groups("user")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * * @Groups("user")
      */
     private $role;
 
