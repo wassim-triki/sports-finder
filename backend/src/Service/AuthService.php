@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Address;
 use App\Entity\User;
+use App\Exception\ConflictException;
 use App\Repository\UserRepository;
 
 class AuthService{
@@ -13,6 +14,10 @@ class AuthService{
   }
 
   public function registerUser($userData):User{
+    $userExists=$this->userRepository->findOneBy(['email'=>$userData->email]);
+    if($userExists){
+      throw new ConflictException('Email already in use.');
+    }
     $user=new User();
     $user->setEmail($userData->email);
     $user->setFirstName($userData->firstName);

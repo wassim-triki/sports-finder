@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Exception\ConflictException;
 use App\Service\AuthService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,21 +26,17 @@ class AuthController extends AbstractController
      * @Route("/api/register", name="app_registration",methods={"POST"})
      */
     public function register(Request $request,SerializerInterface $serializer): Response{
+            $userData=json_decode($request->getContent());
+            $user=$this->authService->registerUser($userData);
+            $json=$serializer->serialize(['message'=>'Registration Successful.','user'=>$user],'json',[ObjectNormalizer::IGNORED_ATTRIBUTES => ['password'],
+            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object){
+                return $object->getId();
+            }]);
+    
+            $response = new Response($json,Response::HTTP_CREATED,['Content-Type'=>'application/json']);
+    
+            return $response;
 
 
-
-
-
-
-        $userData=json_decode($request->getContent());
-        $user=$this->authService->registerUser($userData);
-        $json=$serializer->serialize(['message'=>'Registration Successful.','user'=>$user],'json',[ObjectNormalizer::IGNORED_ATTRIBUTES => ['password'],
-        ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object,$format,$context){
-            return $object->getId();
-        }]);
-
-        $response = new Response($json,Response::HTTP_CREATED,['Content-Type'=>'application/json']);
-
-        return $response;
     }
 }
