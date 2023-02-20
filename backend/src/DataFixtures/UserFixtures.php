@@ -18,10 +18,17 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         
+
         $address=$this->createAddress('Nabeul','Kelibia','Wasel Ben Aata','8090');
-        $user =$this->createUser('wsmtriki@gmail.com','wsmtriki','Wassim','Triki',['ROLE_USER'],'24542649',$address);
+        $user =$this->createUser('testuser@gmail.com','testuser','Test','User',['ROLE_USER'],'24542649',$address);
+        
+        $addressAdmin=$this->createAddress('Sousse','Sousse','Rue Ibn Khaldoun','4000');
+        $userAdmin =$this->createUser('wsmtriki@gmail.com','wsmtriki','Wassim','Triki',['ROLE_ADMIN'],'24542649',$addressAdmin);
 
 
+
+
+        $manager->persist($userAdmin);
         $manager->persist($user);
         $manager->flush();
     }

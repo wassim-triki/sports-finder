@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=AddressRepository::class)
@@ -41,6 +42,18 @@ class Address
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="address", cascade={"persist", "remove"})
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -108,6 +121,30 @@ class Address
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
