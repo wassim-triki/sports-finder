@@ -85,7 +85,7 @@ export const Register = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Rgister
+            Register
           </Typography>
           <Typography component="h3" color={'red'}>
             {error && error}
@@ -190,7 +190,7 @@ export const Register = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Register
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
