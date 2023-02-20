@@ -24,6 +24,8 @@ services:
   # please note that last definitions always *replace* previous ones
   App\Service\AuthService:
     autowire: true
+  App\Service\UserService:
+    autowire: true
 
   App\EventListener\ExceptionListener:
     tags:

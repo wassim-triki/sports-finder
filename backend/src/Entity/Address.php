@@ -38,10 +38,6 @@ class Address
      */
     private $zipCode;
 
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="address", cascade={"persist", "remove"})
-     */
-    private $user;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -108,22 +104,6 @@ class Address
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        // set the owning side of the relation if necessary
-        if ($user->getAddress() !== $this) {
-            $user->setAddress($this);
-        }
-
-        $this->user = $user;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {

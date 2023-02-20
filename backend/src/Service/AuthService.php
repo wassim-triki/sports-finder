@@ -33,7 +33,6 @@ class AuthService{
       $user->setPhone($userData->phone);
     if($userData->address){
       $address=new Address();
-      $address->setUser($user);
       $address->setState($userData->address->state);
       $address->setCity($userData->address->city);
       $address->setStreet($userData->address->street);
