@@ -33,7 +33,5 @@ class AuthController extends AbstractController
             $response = new Response($json,Response::HTTP_CREATED,['Content-Type'=>'application/json']);
     
             return $response;
-
-
     }
 }
