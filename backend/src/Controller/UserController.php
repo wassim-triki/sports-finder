@@ -29,7 +29,7 @@ class UserController extends AbstractController
 
         $json=$serializer->serialize(['users'=>$users],'json');
 
-        $response = new Response($json,Response::HTTP_CREATED,['Content-Type'=>'application/json']);
+        $response = new Response($json,Response::HTTP_OK,['Content-Type'=>'application/json']);
 
         return $response;
     }

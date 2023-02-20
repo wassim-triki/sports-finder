@@ -28,10 +28,7 @@ class AuthController extends AbstractController
     public function register(Request $request,SerializerInterface $serializer): Response{
             $userData=json_decode($request->getContent());
             $user=$this->authService->registerUser($userData);
-            $json=$serializer->serialize(['message'=>'Registration Successful.','user'=>$user],'json',[ObjectNormalizer::IGNORED_ATTRIBUTES => ['password'],
-            ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object){
-                return $object->getId();
-            }]);
+            $json=$serializer->serialize(['message'=>'Registration Successful.','user'=>$user],'json');
     
             $response = new Response($json,Response::HTTP_CREATED,['Content-Type'=>'application/json']);
     
