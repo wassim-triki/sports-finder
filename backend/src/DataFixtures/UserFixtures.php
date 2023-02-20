@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Address;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -16,16 +17,32 @@ class UserFixtures extends Fixture
     }
     public function load(ObjectManager $manager): void
     {
-        $user = new User();
-        $user->setEmail('wsmtriki@gmail.com');
-        $password=$this->hasher->hashPassword($user,'wsmtriki');
-        $user->setPassword($password);
-        $user->setFirstName('Wassim');
-        $user->setLastName('Triki');
-        $user->setRoles(['ROLE_USER']);
-        $user->setPhone('24542649');
+        
+        $address=$this->createAddress('Nabeul','Kelibia','Wasel Ben Aata','8090');
+        $user =$this->createUser('wsmtriki@gmail.com','wsmtriki','Wassim','Triki',['ROLE_USER'],'24542649',$address);
+
 
         $manager->persist($user);
         $manager->flush();
+    }
+    public function createUser($email,$password,$firstName,$lastName,array $roles,$phone,Address $address):User{
+        $user = new User();
+        $user->setEmail($email);
+        $pw=$this->hasher->hashPassword($user,$password);
+        $user->setPassword($pw);
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setRoles($roles);
+        $user->setPhone($phone);
+        $user->setAddress($address);
+        return $user;
+    }
+    public function createAddress($state,$city,$street,$zipCode){
+        $address=new Address();
+        $address->setState($state);
+        $address->setCity($city);
+        $address->setStreet($street);
+        $address->setZipCode($zipCode);
+        return $address;
     }
 }
