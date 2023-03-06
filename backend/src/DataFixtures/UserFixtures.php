@@ -22,8 +22,7 @@ class UserFixtures extends Fixture
         $address=$this->createAddress('Nabeul','Kelibia','Wasel Ben Aata','8090');
         $user =$this->createUser('testuser@gmail.com','testuser','Test','User',['ROLE_USER'],'24542649',$address);
         
-        $addressAdmin=$this->createAddress('Sousse','Sousse','Rue Ibn Khaldoun','4000');
-        $userAdmin =$this->createUser('wsmtriki@gmail.com','wsmtriki','Wassim','Triki',['ROLE_ADMIN'],'24542649',$addressAdmin);
+        $userAdmin =$this->createUser('wsmtriki@gmail.com','wsmtriki','Wassim','Triki',['ROLE_ADMIN','ROLE_USER'],'24542649');
 
 
 
@@ -32,7 +31,7 @@ class UserFixtures extends Fixture
         $manager->persist($user);
         $manager->flush();
     }
-    public function createUser($email,$password,$firstName,$lastName,array $roles,$phone,Address $address):User{
+    public function createUser($email,$password,$firstName,$lastName,array $roles,$phone,Address $address=null):User{
         $user = new User();
         $user->setEmail($email);
         $pw=$this->hasher->hashPassword($user,$password);
@@ -41,7 +40,9 @@ class UserFixtures extends Fixture
         $user->setLastName($lastName);
         $user->setRoles($roles);
         $user->setPhone($phone);
-        $user->setAddress($address);
+        if($address){
+            $user->setAddress($address);
+        }
         return $user;
     }
     public function createAddress($state,$city,$street,$zipCode){
