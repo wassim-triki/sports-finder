@@ -1,208 +1,133 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { MuiTelInput } from 'mui-tel-input';
-import { useState } from 'react';
-import axios from 'axios';
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Project
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { Container } from '../layouts/Container';
+import { InputField } from './InputField';
+import CredentialsForm from './CredentialsForm';
+import ContactForm from './ContactForm';
 
-const theme = createTheme();
+const steps = ['Credentials', 'Contact'];
 
-export const Register = () => {
-  const [error, setError] = useState('');
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    try {
-      setError('');
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      const userData = {
-        firstName: data.get('firstName'),
-        lastName: data.get('lastName'),
-        email: data.get('email'),
-        password: data.get('password'),
-        phoneNo: data.get('phoneNo'),
-        role: 'user',
-        addresses: [
-          {
-            postalCode: data.get('postalCode'),
-            state: data.get('state'),
-            city: data.get('city'),
-          },
-        ],
-      };
-      console.log(userData);
-      const resp = await axios.post(
-        'https://localhost:8000/api/register',
-        userData
-      );
-      console.log(resp);
-    } catch (error: any) {
-      setError(error.response.data.message);
-    } finally {
+export default function Register() {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [skipped, setSkipped] = React.useState(new Set<number>());
+
+  React.useEffect(() => {
+    console.log(activeStep);
+  }, [activeStep]);
+
+  const isStepOptional = (step: number) => {
+    return step === 1;
+  };
+
+  const isStepSkipped = (step: number) => {
+    return skipped.has(step);
+  };
+
+  const handleNext = () => {
+    let newSkipped = skipped;
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values());
+      newSkipped.delete(activeStep);
     }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Register
-          </Typography>
-          <Typography component="h3" color={'red'}>
-            {error && error}
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
+    <Container>
+      <div className="mx-auto mt-20 sm:max-w-[500px]">
+        <Box sx={{ width: '100%', margin: 'auto' }}>
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const stepProps: { completed?: boolean } = {};
+              const labelProps: {
+                optional?: React.ReactNode;
+              } = {};
+              if (isStepOptional(index)) {
+                labelProps.optional = (
+                  <Typography variant="caption">Optional</Typography>
+                );
+              }
+              if (isStepSkipped(index)) {
+                stepProps.completed = false;
+              }
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <Typography sx={{ mt: 2, mb: 1 }}>
+                All steps completed - you&apos;re finished
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Box sx={{ flex: '1 1 auto' }} />
+                <Button onClick={handleReset}>Reset</Button>
+              </Box>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Typography sx={{ mt: 2, mb: 1 }}>
+                Step {activeStep + 1}
+              </Typography>
+              {activeStep === 0 && <CredentialsForm />}
+              {activeStep === 1 && <ContactForm />}
 
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12} sm={8}>
-                <MuiTelInput
-                  name="phoneNo"
-                  value="+21624542649"
-                  style={{ width: '100%' }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  required
-                  fullWidth
-                  id="postalCode"
-                  label="Postal Code"
-                  name="postalCode"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  name="state"
-                  required
-                  fullWidth
-                  id="state"
-                  label="State"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  name="city"
-                  required
-                  fullWidth
-                  id="city"
-                  label="City"
-                />
-              </Grid>
-
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Register
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>
+                <Box sx={{ flex: '1 1 auto' }} />
+                {isStepOptional(activeStep) && (
+                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                    Skip
+                  </Button>
+                )}
+                <Button onClick={handleNext}>
+                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                </Button>
+              </Box>
+            </React.Fragment>
+          )}
         </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+      </div>
+    </Container>
   );
-};
+}
