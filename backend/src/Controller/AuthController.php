@@ -34,4 +34,15 @@ class AuthController extends AbstractController
     
             return $response;
     }
+    /**
+     * @Route("/api/me", name="app_auth",methods={"GET"})
+     */
+    public function getAuth(SerializerInterface $serializer): Response{
+        $user = $this->getUser();
+        $json=$serializer->serialize(['user'=>$user],'json');
+    
+        $response = new Response($json,Response::HTTP_OK,['Content-Type'=>'application/json']);
+    
+        return $response;
+    }
 }
