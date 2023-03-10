@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 
 const OPT_STEP = 1;
+const STEPS = ['Credentials', 'Contact'];
 
 type SkipperContextType = {
   activeStep: number;
   skipped: Set<number>;
   optionalStep: number;
+  steps: Array<string>;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   setSkipped: React.Dispatch<React.SetStateAction<Set<number>>>;
   isStepOptional: Function;
@@ -21,6 +23,7 @@ const initialState = {
   activeStep: 0,
   skipped: new Set<number>(),
   optionalStep: 0,
+  steps: STEPS,
   setActiveStep: () => {},
   setSkipped: () => {},
   isStepOptional: () => {},
@@ -37,6 +40,7 @@ export const SkipperProvider = ({ children }: any) => {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set<number>());
   const optionalStep = OPT_STEP;
+  const steps = STEPS;
 
   const isStepOptional = (step: number) => {
     return step === 1;
@@ -86,6 +90,7 @@ export const SkipperProvider = ({ children }: any) => {
         activeStep,
         skipped,
         optionalStep,
+        steps,
         setActiveStep,
         setSkipped,
         isStepOptional,

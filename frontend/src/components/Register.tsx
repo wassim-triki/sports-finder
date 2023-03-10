@@ -10,17 +10,14 @@ import CredentialsForm from './CredentialsForm';
 import ContactForm from './ContactForm';
 import useSkipperContext from '../context/skipper-context';
 
-const steps = ['Credentials', 'Contact'];
-
 export default function Register() {
   const {
     activeStep,
     isStepOptional,
     isStepSkipped,
     handleNext,
-    handleBack,
     handleReset,
-    handleSkip,
+    steps,
   } = useSkipperContext();
 
   const handleSubmitCredentials = (formValues: any) => {
@@ -74,26 +71,6 @@ export default function Register() {
                 />
               )}
               {activeStep === 1 && <ContactForm />}
-
-              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                <Button
-                  color="inherit"
-                  disabled={activeStep === 0}
-                  onClick={handleBack}
-                  sx={{ mr: 1 }}
-                >
-                  Back
-                </Button>
-                <Box sx={{ flex: '1 1 auto' }} />
-                {isStepOptional(activeStep) && (
-                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                    Skip
-                  </Button>
-                )}
-                <Button onClick={handleNext}>
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </Box>
             </React.Fragment>
           )}
         </Box>

@@ -1,5 +1,8 @@
+import { Button } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import useSkipperContext from '../context/skipper-context';
+import RegisterForm from '../layouts/RegisterForm';
 
 const inputs = [
   {
@@ -39,11 +42,10 @@ const ContactForm = () => {
   const submitForm = (formValues: any) => {
     console.log(formValues);
   };
+
+  const { isStepOptional, activeStep, handleSkip } = useSkipperContext();
   return (
-    <form
-      onSubmit={handleSubmit(submitForm)}
-      className="grid grid-cols-2 gap-4"
-    >
+    <RegisterForm onSubmit={handleSubmit(submitForm)}>
       {inputs.map(({ name, label, type, placeholder }, idx) => (
         <label
           key={name}
@@ -60,7 +62,7 @@ const ContactForm = () => {
           />
         </label>
       ))}
-    </form>
+    </RegisterForm>
   );
 };
 

@@ -1,5 +1,8 @@
+import { Button } from '@mui/material';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import useSkipperContext from '../context/skipper-context';
+import RegisterForm from '../layouts/RegisterForm';
 const inputs = [
   {
     name: 'firstName',
@@ -36,17 +39,16 @@ const inputs = [
 interface Props {
   handleSubmitCredentials: SubmitHandler<any>;
 }
+
 const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
   const { register, handleSubmit } = useForm();
-  // console.log(useForm());
+  const { activeStep, handleNext, steps } = useSkipperContext();
   const submitForm = (formValues: any) => {
     console.log(formValues);
+    handleNext();
   };
   return (
-    <form
-      onSubmit={handleSubmit(handleSubmitCredentials)}
-      className="grid grid-cols-2 gap-4"
-    >
+    <RegisterForm onSubmit={handleSubmit(handleSubmitCredentials)}>
       {inputs.map(({ name, label, type, placeholder }, idx) => (
         <label
           key={name}
@@ -63,8 +65,7 @@ const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
           />
         </label>
       ))}
-      <button type="submit">submit</button>
-    </form>
+    </RegisterForm>
   );
 };
 
