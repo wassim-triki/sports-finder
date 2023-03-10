@@ -1,41 +1,69 @@
 import React from 'react';
-import { InputField } from './InputField';
+import { SubmitHandler, useForm } from 'react-hook-form';
+const inputs = [
+  {
+    name: 'firstName',
+    label: 'First name',
+    type: 'text',
+    placeholder: 'Enter your first name',
+  },
+  {
+    name: 'lastName',
+    label: 'Last name',
+    type: 'text',
+    placeholder: 'Enter your last name',
+  },
+  {
+    name: 'email',
+    label: 'Email',
+    type: 'email',
+    placeholder: 'Enter your email',
+  },
+  {
+    name: 'password',
+    label: 'Password',
+    type: 'password',
+    placeholder: 'Enter your password',
+  },
+  {
+    name: 'repeatPassword',
+    label: 'Repeat password',
+    type: 'password',
+    placeholder: 'Repeat your password',
+  },
+];
 
-const CredentialsForm = () => {
+interface Props {
+  handleSubmitCredentials: SubmitHandler<any>;
+}
+const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
+  const { register, handleSubmit } = useForm();
+  // console.log(useForm());
+  const submitForm = (formValues: any) => {
+    console.log(formValues);
+  };
   return (
-    <form className="flex flex-col gap-3">
-      <div className="flex gap-4">
-        <InputField
-          label="First name"
-          type="text"
-          name="firstName"
-          placeHolder="Your first name"
-        />
-        <InputField
-          label="Last name"
-          type="text"
-          name="lastName"
-          placeHolder="Your last name"
-        />
-      </div>
-      <InputField
-        label="Email"
-        type="email"
-        name="email"
-        placeHolder="name@example.com"
-      />
-      <InputField
-        label="Password"
-        type="password"
-        name="password"
-        placeHolder="Your password"
-      />
-      <InputField
-        label="Repeat password"
-        type="password"
-        name="repeatPassword"
-        placeHolder="Repeat your password"
-      />
+    <form
+      onSubmit={handleSubmit(handleSubmitCredentials)}
+      className="grid grid-cols-2 gap-4"
+    >
+      {inputs.map(({ name, label, type, placeholder }, idx) => (
+        <label
+          key={name}
+          className={`${
+            idx >= 2 && 'col-span-2'
+          } text-slate-500 font-medium focus-within:text-black transition-all`}
+        >
+          {label}
+          <input
+            className={`input`}
+            {...register(name)}
+            type={type}
+            placeholder={placeholder}
+          />
+        </label>
+      ))}
+      <button type="submit">submit</button>
     </form>
   );
 };

@@ -1,43 +1,65 @@
 import React from 'react';
-import { InputField } from './InputField';
+import { useForm } from 'react-hook-form';
+
+const inputs = [
+  {
+    name: 'phone',
+    label: 'Phone',
+    type: 'text',
+    placeholder: 'Enter your phone',
+  },
+  {
+    name: 'state',
+    label: 'State',
+    type: 'text',
+    placeholder: 'Enter your state',
+  },
+  {
+    name: 'zipCode',
+    label: 'Zip code',
+    type: 'text',
+    placeholder: 'Enter your zip code',
+  },
+  {
+    name: 'city',
+    label: 'City',
+    type: 'text',
+    placeholder: 'Enter your city',
+  },
+  {
+    name: 'street',
+    label: 'Street',
+    type: 'text',
+    placeholder: 'Enter your street',
+  },
+];
 
 const ContactForm = () => {
+  const { register, handleSubmit } = useForm();
+  const submitForm = (formValues: any) => {
+    console.log(formValues);
+  };
   return (
-    <form className="flex flex-col gap-3">
-      <InputField
-        label="Phone"
-        type="text"
-        name="phone"
-        placeHolder="12 345 678"
-      />
-      <div className="flex gap-4">
-        <InputField
-          label="State"
-          type="text"
-          name="state"
-          placeHolder="Enter your state"
-        />
-        <InputField
-          label="City"
-          type="text"
-          name="city"
-          placeHolder="Enter your city"
-        />
-      </div>
-      <div className="flex gap-4">
-        <InputField
-          label="Street"
-          type="text"
-          name="street"
-          placeHolder="Enter your street"
-        />
-        <InputField
-          label="Zip code"
-          type="text"
-          name="zipCode"
-          placeHolder="Enter your zip code"
-        />
-      </div>
+    <form
+      onSubmit={handleSubmit(submitForm)}
+      className="grid grid-cols-2 gap-4"
+    >
+      {inputs.map(({ name, label, type, placeholder }, idx) => (
+        <label
+          key={name}
+          className={`${
+            idx !== 1 && idx !== 2 && 'col-span-2'
+          } text-slate-500 font-medium focus-within:text-black transition-all`}
+        >
+          {label}
+          <input
+            className={`input`}
+            {...register(name)}
+            type={type}
+            placeholder={placeholder}
+          />
+        </label>
+      ))}
     </form>
   );
 };

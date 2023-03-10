@@ -17,7 +17,7 @@ export default function Register() {
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
   React.useEffect(() => {
-    console.log(activeStep);
+    // console.log(activeStep);
   }, [activeStep]);
 
   const isStepOptional = (step: number) => {
@@ -37,6 +37,11 @@ export default function Register() {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+  };
+
+  const handleSubmitCredentials = (formValues: any) => {
+    console.log(formValues);
+    handleNext();
   };
 
   const handleBack = () => {
@@ -102,7 +107,11 @@ export default function Register() {
               <Typography sx={{ mt: 2, mb: 1 }}>
                 Step {activeStep + 1}
               </Typography>
-              {activeStep === 0 && <CredentialsForm />}
+              {activeStep === 0 && (
+                <CredentialsForm
+                  handleSubmitCredentials={handleSubmitCredentials}
+                />
+              )}
               {activeStep === 1 && <ContactForm />}
 
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
