@@ -3,6 +3,8 @@ import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useSkipperContext from '../context/skipper-context';
 import RegisterForm from '../layouts/RegisterForm';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { credentialsSchema } from '../schema/credentials-schema';
 const inputs = [
   {
     name: 'firstName',
@@ -41,7 +43,11 @@ interface Props {
 }
 
 const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(credentialsSchema) });
   const { activeStep, handleNext, steps } = useSkipperContext();
   const submitForm = (formValues: any) => {
     console.log(formValues);
@@ -54,9 +60,23 @@ const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
           key={name}
           className={`${
             idx >= 2 && 'col-span-2'
-          } text-slate-500 font-medium focus-within:text-black transition-all`}
+          } text-slate-500 font-medium focus-within:text-black transition-all `}
         >
-          {label}
+          <div
+            className={`${
+              errors[name] && 'text-red-500 focus-within:text-red-500'
+            }`}
+          >
+            {label}{' '}
+            {errors[name] ? (
+              <span className=" text-sm italic font-normal ">
+                <span>- </span>
+                {errors[name]?.message?.toString()}
+              </span>
+            ) : (
+              <></>
+            )}
+          </div>
           <input
             className={`input`}
             {...register(name)}
@@ -65,6 +85,7 @@ const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
           />
         </label>
       ))}
+      {/* {errors.email && errors.email.message} */}
     </RegisterForm>
   );
 };

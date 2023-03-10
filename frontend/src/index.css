@@ -4,6 +4,6 @@
 
 @layer components {
   .input {
-    @apply outline-accent-200 px-3 py-2 border-2 border-slate-300 rounded-[4px] w-full;
+    @apply outline-accent-200 px-3 py-2 border-2 border-slate-300 rounded-[4px] w-full text-black;
   }
 }
