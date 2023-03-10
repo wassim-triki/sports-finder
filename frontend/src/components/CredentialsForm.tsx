@@ -5,6 +5,7 @@ import useSkipperContext from '../context/skipper-context';
 import RegisterForm from '../layouts/RegisterForm';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { credentialsSchema } from '../schema/credentials-schema';
+import InputField from './InputField';
 const inputs = [
   {
     name: 'firstName',
@@ -54,36 +55,15 @@ const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
     handleNext();
   };
   return (
-    <RegisterForm onSubmit={handleSubmit(handleSubmitCredentials)}>
-      {inputs.map(({ name, label, type, placeholder }, idx) => (
-        <label
-          key={name}
-          className={`${
-            idx >= 2 && 'col-span-2'
-          } text-slate-500 font-medium focus-within:text-black transition-all `}
-        >
-          <div
-            className={`${
-              errors[name] && 'text-red-500 focus-within:text-red-500'
-            }`}
-          >
-            {label}{' '}
-            {errors[name] ? (
-              <span className=" text-sm italic font-normal ">
-                <span>- </span>
-                {errors[name]?.message?.toString()}
-              </span>
-            ) : (
-              <></>
-            )}
-          </div>
-          <input
-            className={`input`}
-            {...register(name)}
-            type={type}
-            placeholder={placeholder}
-          />
-        </label>
+    <RegisterForm onSubmit={handleSubmit(submitForm)}>
+      {inputs.map((input, idx) => (
+        <InputField
+          key={input.name}
+          {...input}
+          register={register}
+          errors={errors}
+          fullWidth={idx > 1}
+        />
       ))}
       {/* {errors.email && errors.email.message} */}
     </RegisterForm>

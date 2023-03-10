@@ -1,26 +1,52 @@
 import React from 'react';
 
 interface Props {
-  label: string;
-  type: string;
   name: string;
-  placeHolder: string;
+  type: string;
+  placeholder: string;
+  label: string;
+  errors: any;
+  register: Function;
+  fullWidth: Boolean;
 }
-export const InputField = ({ label, type, name, placeHolder }: Props) => {
+
+const InputField = ({
+  name,
+  label,
+  type,
+  placeholder,
+  register,
+  errors,
+  fullWidth = true,
+}: Props) => {
   return (
-    <div className="w-full group flex flex-col gap-1">
+    <div className={`flex flex-col ${fullWidth && 'col-span-full'}`}>
       <label
-        className="text-slate-500 group-focus-within:text-slate-800"
         htmlFor={name}
+        className={`${
+          !errors[name] && 'text-slate-500'
+        } font-medium focus-within:text-black transition-all ${
+          errors[name] && 'text-red-500 focus-within:text-red-500'
+        }`}
       >
         {label}
+        {errors[name] ? (
+          <span className=" text-sm italic font-normal ">
+            <span> - </span>
+            {errors[name]?.message?.toString()}
+          </span>
+        ) : (
+          <></>
+        )}
       </label>
       <input
-        className="group outline-accent-200 px-3 py-2 border-2 border-slate-300 rounded-[4px] w-full"
+        className={`input`}
+        {...register(name)}
         type={type}
-        placeholder={placeHolder}
-        id={name}
+        placeholder={placeholder}
       />
     </div>
   );
 };
+
+export default InputField;
