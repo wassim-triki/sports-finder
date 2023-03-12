@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -30,6 +31,21 @@ class UserController extends AbstractController
         $json=$serializer->serialize(['users'=>$users],'json');
 
         $response = new Response($json,Response::HTTP_OK,['Content-Type'=>'application/json']);
+
+        return $response;
+    }
+
+    /**
+     * @Route("/api/users/{id}", name="app_update_user" , methods={"PUT"})
+     */
+    public function updateUser(Request $request,$id,SerializerInterface $serializer): Response
+    {
+        $userData=json_decode($request->getContent());
+        $user=$this->userService->updateUser($id,$userData);
+
+        $json=$serializer->serialize(['user'=>$user],'json');
+
+        $response = new Response($json,Response::HTTP_ACCEPTED,['Content-Type'=>'application/json']);
 
         return $response;
     }

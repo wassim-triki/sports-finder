@@ -30,16 +30,14 @@ class AuthService{
     $hashedPassword=$this->hasher->hashPassword($user,$userData->password);
     $user->setPassword($hashedPassword);
 
-    if(isset($userData->phone)){
-      $user->setPhone($userData->phone);
-    }
+      $user->setPhone($userData->phone??null);
     
-    if(isset($userData->address)){
+      if(isset($userData->address)){
       $address=new Address();
-      $address->setState($userData->address->state);
-      $address->setCity($userData->address->city);
-      $address->setStreet($userData->address->street);
-      $address->setZipCode($userData->address->zipCode);
+      $address->setState($userData->address->state??null);
+      $address->setCity($userData->address->city??null);
+      $address->setStreet($userData->address->street??null);
+      $address->setZipCode($userData->address->zipCode??null);
       $user->setAddress($address);
     }
 

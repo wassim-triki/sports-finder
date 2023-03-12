@@ -51,7 +51,8 @@ const CredentialsForm = () => {
   const onSubmit = async (formValues: any) => {
     const { repeatPassword, ...userCredentials } = formValues;
     const resp = await toastPromise(registerUser(userCredentials));
-    const { user } = resp.data.user;
+    const { user } = resp.data;
+    console.log(user);
     handleNext();
   };
 
