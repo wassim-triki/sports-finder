@@ -48,6 +48,7 @@ const ContactForm = () => {
   } = useForm({
     resolver: yupResolver(contactSchema),
   });
+
   const submitForm = (formValues: any) => {
     console.log(formValues);
   };
@@ -60,7 +61,6 @@ const ContactForm = () => {
           {...input}
           register={register}
           error={errors[input.name]}
-          fullWidth={idx !== 1 && idx !== 2}
         />
       ))}
     </RegisterForm>

@@ -45,14 +45,14 @@ const CredentialsForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(credentialsSchema) });
+
   const { handleNext } = useSkipperContext();
+
   const submitForm = (formValues: any) => {
     console.log(formValues);
     handleNext();
   };
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+
   return (
     <RegisterForm onSubmit={handleSubmit(submitForm)}>
       {inputs.map((input, idx) => (
@@ -61,7 +61,6 @@ const CredentialsForm = () => {
           {...input}
           register={register}
           error={errors[input.name]}
-          fullWidth={idx > 1}
         />
       ))}
     </RegisterForm>

@@ -7,7 +7,6 @@ interface Props {
   label: string;
   error: any;
   register: Function;
-  fullWidth: Boolean;
 }
 
 const InputField = ({
@@ -17,10 +16,9 @@ const InputField = ({
   placeholder,
   register,
   error,
-  fullWidth = true,
 }: Props) => {
   return (
-    <div className={`flex flex-col ${fullWidth && 'col-span-full'}`}>
+    <div id={`${name}`} className={`flex flex-col`}>
       <label
         htmlFor={name}
         className={`${
