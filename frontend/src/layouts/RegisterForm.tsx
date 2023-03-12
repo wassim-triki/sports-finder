@@ -23,7 +23,7 @@ const RegisterForm = ({ onSubmit, inputs, schema }: Props) => {
   } = useForm({ resolver: yupResolver(schema) });
 
   useEffect(() => {
-    console.log(errors);
+    // console.log(errors);
   }, [errors]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">

@@ -8,6 +8,7 @@ import { credentialsSchema } from '../schema/credentials-schema';
 import InputField from './InputField';
 import { IInput } from '../types';
 import axios from 'axios';
+import api from '../api/axios';
 const inputs: IInput[] = [
   {
     name: 'firstName',
@@ -46,12 +47,11 @@ const CredentialsForm = () => {
 
   const onSubmit = async (formValues: any) => {
     const { repeatPassword, ...userCredentials } = formValues;
-    console.log(userCredentials);
-    const resp = await axios.post(
+    // console.log(userCredentials);
+    const resp = await api.post(
       'https://localhost:8000/api/register',
       userCredentials
     );
-    console.log(resp);
     // handleNext();
   };
 
