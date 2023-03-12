@@ -12,7 +12,7 @@ api.defaults.headers.post['Content-Type'] = 'application/json';
 
 api.interceptors.request.use(
   (request) => {
-    console.log(request);
+    // console.log(request);
     return request;
   },
   (error) => {
@@ -23,11 +23,12 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    toast.success(response.data.message, toastOptions);
+    // toast.success(response.data.message, toastOptions);
     return response;
   },
   (error) => {
-    toast.error(error.response.data.message, toastOptions);
+    if (error.response.status === 500)
+      toast.error(error.response.data.message, toastOptions);
     return Promise.reject(error);
   }
 );

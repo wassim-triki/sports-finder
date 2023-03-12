@@ -5,6 +5,7 @@ import Register from './components/Register';
 import { SkipperProvider } from './context/skipper-context';
 import { useEffect } from 'react';
 import config from './config/config';
+
 function App() {
   return (
     <div className="App">

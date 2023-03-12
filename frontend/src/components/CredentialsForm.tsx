@@ -7,8 +7,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { credentialsSchema } from '../schema/credentials-schema';
 import InputField from './InputField';
 import { IInput } from '../types';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import api from '../api/axios';
+import { toast } from 'react-toastify';
+import { registerUser } from '../api/user';
+import { toastPromise } from '../helpers/toast-promise';
 const inputs: IInput[] = [
   {
     name: 'firstName',
@@ -47,9 +50,9 @@ const CredentialsForm = () => {
 
   const onSubmit = async (formValues: any) => {
     const { repeatPassword, ...userCredentials } = formValues;
-    // console.log(userCredentials);
-    const resp = await api.post('/register', userCredentials);
-    // handleNext();
+    const resp = await toastPromise(registerUser(userCredentials));
+    const { user } = resp.data.user;
+    handleNext();
   };
 
   return (
