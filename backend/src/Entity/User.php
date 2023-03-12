@@ -43,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $phone;
 

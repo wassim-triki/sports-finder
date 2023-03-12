@@ -17,7 +17,7 @@ class AuthService{
     $this->hasher=$hasher;
   }
 
-  public function registerUser($userData):User{
+  public function registerUser($userData){
     $userExists=$this->userRepository->findOneBy(['email'=>$userData->email]);
     if($userExists){
       throw new ConflictException('Email already in use.');
@@ -29,9 +29,12 @@ class AuthService{
     $user->setRoles(['ROLE_USER']);
     $hashedPassword=$this->hasher->hashPassword($user,$userData->password);
     $user->setPassword($hashedPassword);
-    
+
+    if(isset($userData->phone)){
       $user->setPhone($userData->phone);
-    if($userData->address){
+    }
+    
+    if(isset($userData->address)){
       $address=new Address();
       $address->setState($userData->address->state);
       $address->setCity($userData->address->city);

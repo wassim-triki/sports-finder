@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import InputField from '../components/InputField';
 import useSkipperContext from '../context/skipper-context';
@@ -21,6 +21,10 @@ const RegisterForm = ({ onSubmit, inputs, schema }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
       <div className="grid grid-cols-2 gap-4">

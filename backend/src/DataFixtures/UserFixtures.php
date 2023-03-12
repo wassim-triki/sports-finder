@@ -19,27 +19,32 @@ class UserFixtures extends Fixture
     {
         
 
-        $address=$this->createAddress('Nabeul','Kelibia','Wasel Ben Aata','8090');
-        $user =$this->createUser('testuser@gmail.com','testuser','Test','User',['ROLE_USER'],'24542649',$address);
+        // $address=$this->createAddress('Nabeul','Kelibia','Wasel Ben Aata','8090');
+        // $user =$this->createUser('testuser@gmail.com','testuser','Test','User',['ROLE_USER'],'24542649',$address);
         
-        $userAdmin =$this->createUser('wsmtriki@gmail.com','wsmtriki','Wassim','Triki',['ROLE_ADMIN','ROLE_USER'],'24542649');
+        $user =$this->createUser('wsmtriki@gmail.com','wsmtriki','Wassim','Triki');
 
 
 
 
-        $manager->persist($userAdmin);
         $manager->persist($user);
         $manager->flush();
     }
-    public function createUser($email,$password,$firstName,$lastName,array $roles,$phone,Address $address=null):User{
+    public function createUser($email,$password,$firstName,$lastName,array $roles=null,$phone=null,Address $address=null):?User{
         $user = new User();
         $user->setEmail($email);
         $pw=$this->hasher->hashPassword($user,$password);
         $user->setPassword($pw);
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
-        $user->setRoles($roles);
-        $user->setPhone($phone);
+        if($phone){
+            $user->setPhone($phone);
+        }
+        if($roles){
+            $user->setRoles($roles);
+        }else{
+            $user->setRoles( ['ROLE_USER']);
+        }
         if($address){
             $user->setAddress($address);
         }

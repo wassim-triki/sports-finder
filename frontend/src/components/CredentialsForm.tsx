@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { credentialsSchema } from '../schema/credentials-schema';
 import InputField from './InputField';
 import { IInput } from '../types';
+import axios from 'axios';
 const inputs: IInput[] = [
   {
     name: 'firstName',
@@ -43,9 +44,15 @@ const inputs: IInput[] = [
 const CredentialsForm = () => {
   const { handleNext } = useSkipperContext();
 
-  const onSubmit = (formValues: any) => {
-    console.log(formValues);
-    handleNext();
+  const onSubmit = async (formValues: any) => {
+    const { repeatPassword, ...userCredentials } = formValues;
+    console.log(userCredentials);
+    const resp = await axios.post(
+      'https://localhost:8000/api/register',
+      userCredentials
+    );
+    console.log(resp);
+    // handleNext();
   };
 
   return (
