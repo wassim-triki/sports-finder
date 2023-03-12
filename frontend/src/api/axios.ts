@@ -1,5 +1,7 @@
 import axios from 'axios';
 import config from '../config/config';
+import { toast } from 'react-toastify';
+import toastOptions from '../config/toast-options';
 const api = axios.create({
   baseURL: config.apiUrl,
   // timeout: 1000,
@@ -22,11 +24,12 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
+    toast.success(response.data.message, toastOptions);
     console.log(response);
     return response;
   },
   (error) => {
-    alert(error.response.data.message);
+    toast.error(error.response.data.message, toastOptions);
     console.log(error);
     return Promise.reject(error);
   }
