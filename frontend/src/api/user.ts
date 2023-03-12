@@ -5,5 +5,7 @@ export const registerUser = (user: any) => {
 };
 
 export const updateUser = (userData: any) => {
-  return api.put('/user', userData);
+  return api.put('/users/{id}', userData, {
+    // params:{id:}
+  });
 };

@@ -7,6 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { contactSchema } from '../schema/contact-schema';
 import InputField from './InputField';
 import { IInput } from '../types';
+import removeEmpty from '../helpers/removeEmpty';
+import { toastPromise } from '../helpers/toast-promise';
+import { updateUser } from '../api/user';
 
 const inputs: IInput[] = [
   {
@@ -44,8 +47,11 @@ const inputs: IInput[] = [
 const ContactForm = () => {
   const { handleNext } = useSkipperContext();
 
-  const onSubmit = (formValues: any) => {
-    console.log(formValues);
+  const onSubmit = async (formValues: any) => {
+    const userData = removeEmpty(formValues);
+    const resp = await toastPromise(updateUser(userData));
+    const { user } = resp.data;
+    console.log(user);
     handleNext();
   };
 
