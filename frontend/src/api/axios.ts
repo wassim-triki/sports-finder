@@ -16,8 +16,7 @@ api.interceptors.request.use(
     return request;
   },
   (error) => {
-    alert(error.response.data.message);
-    console.log(error);
+    toast.error(error, toastOptions);
     return Promise.reject(error);
   }
 );
@@ -25,12 +24,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     toast.success(response.data.message, toastOptions);
-    console.log(response);
     return response;
   },
   (error) => {
     toast.error(error.response.data.message, toastOptions);
-    console.log(error);
     return Promise.reject(error);
   }
 );

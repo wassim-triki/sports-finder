@@ -48,10 +48,7 @@ const CredentialsForm = () => {
   const onSubmit = async (formValues: any) => {
     const { repeatPassword, ...userCredentials } = formValues;
     // console.log(userCredentials);
-    const resp = await api.post(
-      'https://localhost:8000/api/register',
-      userCredentials
-    );
+    const resp = await api.post('/register', userCredentials);
     // handleNext();
   };
 
