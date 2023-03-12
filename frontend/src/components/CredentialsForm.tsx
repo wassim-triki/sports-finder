@@ -6,7 +6,8 @@ import RegisterForm from '../layouts/RegisterForm';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { credentialsSchema } from '../schema/credentials-schema';
 import InputField from './InputField';
-const inputs = [
+import { IInput } from '../types';
+const inputs: IInput[] = [
   {
     name: 'firstName',
     label: 'First name',
@@ -40,30 +41,19 @@ const inputs = [
 ];
 
 const CredentialsForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(credentialsSchema) });
-
   const { handleNext } = useSkipperContext();
 
-  const submitForm = (formValues: any) => {
+  const onSubmit = (formValues: any) => {
     console.log(formValues);
     handleNext();
   };
 
   return (
-    <RegisterForm onSubmit={handleSubmit(submitForm)}>
-      {inputs.map((input, idx) => (
-        <InputField
-          key={input.name}
-          {...input}
-          register={register}
-          error={errors[input.name]}
-        />
-      ))}
-    </RegisterForm>
+    <RegisterForm
+      onSubmit={onSubmit}
+      inputs={inputs}
+      schema={credentialsSchema}
+    />
   );
 };
 

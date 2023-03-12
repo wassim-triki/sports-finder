@@ -6,8 +6,9 @@ import RegisterForm from '../layouts/RegisterForm';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { contactSchema } from '../schema/contact-schema';
 import InputField from './InputField';
+import { IInput } from '../types';
 
-const inputs = [
+const inputs: IInput[] = [
   {
     name: 'phone',
     label: 'Phone',
@@ -41,29 +42,15 @@ const inputs = [
 ];
 
 const ContactForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(contactSchema),
-  });
+  const { handleNext } = useSkipperContext();
 
-  const submitForm = (formValues: any) => {
+  const onSubmit = (formValues: any) => {
     console.log(formValues);
+    handleNext();
   };
 
   return (
-    <RegisterForm onSubmit={handleSubmit(submitForm)}>
-      {inputs.map((input, idx) => (
-        <InputField
-          key={input.name}
-          {...input}
-          register={register}
-          error={errors[input.name]}
-        />
-      ))}
-    </RegisterForm>
+    <RegisterForm onSubmit={onSubmit} inputs={inputs} schema={contactSchema} />
   );
 };
 

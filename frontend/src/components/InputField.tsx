@@ -1,11 +1,6 @@
 import React from 'react';
-
-interface Props {
-  name: string;
-  type: string;
-  placeholder: string;
-  label: string;
-  error: any;
+import { IInput } from '../types';
+interface Props extends IInput {
   register: Function;
 }
 
