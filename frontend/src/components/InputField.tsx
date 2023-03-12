@@ -5,7 +5,7 @@ interface Props {
   type: string;
   placeholder: string;
   label: string;
-  errors: any;
+  error: any;
   register: Function;
   fullWidth: Boolean;
 }
@@ -16,7 +16,7 @@ const InputField = ({
   type,
   placeholder,
   register,
-  errors,
+  error,
   fullWidth = true,
 }: Props) => {
   return (
@@ -24,16 +24,16 @@ const InputField = ({
       <label
         htmlFor={name}
         className={`${
-          !errors[name] && 'text-slate-500'
+          !error && 'text-slate-500'
         } font-medium focus-within:text-black transition-all ${
-          errors[name] && 'text-red-500 focus-within:text-red-500'
+          error && 'text-red-500 focus-within:text-red-500'
         }`}
       >
         {label}
-        {errors[name] ? (
+        {error ? (
           <span className=" text-sm italic font-normal ">
             <span> - </span>
-            {errors[name]?.message?.toString()}
+            {error?.message?.toString()}
           </span>
         ) : (
           <></>

@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useSkipperContext from '../context/skipper-context';
 import RegisterForm from '../layouts/RegisterForm';
@@ -39,21 +39,20 @@ const inputs = [
   },
 ];
 
-interface Props {
-  handleSubmitCredentials: SubmitHandler<any>;
-}
-
-const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
+const CredentialsForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(credentialsSchema) });
-  const { activeStep, handleNext, steps } = useSkipperContext();
+  const { handleNext } = useSkipperContext();
   const submitForm = (formValues: any) => {
     console.log(formValues);
     handleNext();
   };
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   return (
     <RegisterForm onSubmit={handleSubmit(submitForm)}>
       {inputs.map((input, idx) => (
@@ -61,11 +60,10 @@ const CredentialsForm = ({ handleSubmitCredentials }: Props) => {
           key={input.name}
           {...input}
           register={register}
-          errors={errors}
+          error={errors[input.name]}
           fullWidth={idx > 1}
         />
       ))}
-      {/* {errors.email && errors.email.message} */}
     </RegisterForm>
   );
 };

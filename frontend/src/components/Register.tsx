@@ -20,11 +20,6 @@ export default function Register() {
     steps,
   } = useSkipperContext();
 
-  const handleSubmitCredentials = (formValues: any) => {
-    console.log(formValues);
-    handleNext();
-  };
-
   return (
     <Container>
       <div className="mx-auto mt-20 sm:max-w-[500px]">
@@ -65,11 +60,7 @@ export default function Register() {
               <Typography sx={{ mt: 2, mb: 1 }}>
                 Step {activeStep + 1}
               </Typography>
-              {activeStep === 0 && (
-                <CredentialsForm
-                  handleSubmitCredentials={handleSubmitCredentials}
-                />
-              )}
+              {activeStep === 0 && <CredentialsForm />}
               {activeStep === 1 && <ContactForm />}
             </React.Fragment>
           )}
