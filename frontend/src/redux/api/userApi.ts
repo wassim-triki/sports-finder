@@ -1,6 +1,6 @@
 import { UpdateUserRequest } from '../../components/ContactForm';
 import { IGenericResponse, IUser } from '../../types';
-import { setUser } from '../features/userSlice';
+import { setUser } from '../features/authSlice';
 import { apiSlice } from './apiSlice';
 
 export const userApi = apiSlice.injectEndpoints({
@@ -15,7 +15,8 @@ export const userApi = apiSlice.injectEndpoints({
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const resp = await queryFulfilled;
-          // dispatch(setUser(data));
+          const { user } = resp.data;
+          dispatch(setUser(user));
         } catch (error) {}
       },
     }),
