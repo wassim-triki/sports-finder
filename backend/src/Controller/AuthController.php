@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Exception\ConflictException;
 use App\Service\AuthService;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -17,9 +19,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class AuthController extends AbstractController
 {
+    private $jwtTokenManager;
+
 
     private $authService;
-    public function __construct(AuthService $authService ){
+    public function __construct(AuthService $authService,JWTTokenManagerInterface $jwtTokenManager ){
+        $this->jwtTokenManager = $jwtTokenManager;
         $this->authService=$authService;
     }
     /**
@@ -45,4 +50,5 @@ class AuthController extends AbstractController
     
         return $response;
     }
+
 }
