@@ -35,14 +35,15 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const resp = await queryFulfilled;
           const { token } = resp.data;
+          localStorage.setItem('token', token);
           dispatch(setToken(token));
-          await dispatch(authApi.endpoints.getMe.initiate(null));
+          await dispatch(authApi.endpoints.getMe.initiate());
         } catch (error) {
           console.log(error);
         }
       },
     }),
-    getMe: builder.mutation<GetMeResponse, any>({
+    getMe: builder.mutation<GetMeResponse, void>({
       query: () => ({
         url: '/auth/me',
         // credentials:'include'
@@ -61,4 +62,8 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation } = authApi;
+export const {
+  useRegisterUserMutation,
+  useLoginUserMutation,
+  useGetMeMutation,
+} = authApi;

@@ -6,13 +6,20 @@ import { SkipperProvider } from './context/skipper-context';
 import { useEffect } from 'react';
 import config from './config/config';
 import { Provider } from 'react-redux';
-import { useAppSelector } from './redux/store';
+import { useAppDispatch, useAppSelector } from './redux/store';
 import LoginForm from './components/LoginForm';
 import { selectCurrentUser } from './redux/features/authSlice';
 import NoAuth from './components/NoAuth';
+import { useGetMeMutation } from './redux/api/authApi';
 
 function App() {
   const { auth } = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+  const [getMe] = useGetMeMutation();
+
+  useEffect(() => {
+    getMe();
+  }, []);
 
   useEffect(() => {
     console.log(auth);

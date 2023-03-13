@@ -9,7 +9,7 @@ interface IAuthState {
 
 const initialState: IAuthState = {
   user: null,
-  token: null,
+  token: localStorage.getItem('token') || null,
 };
 
 const authSlice = createSlice({
@@ -27,7 +27,11 @@ const authSlice = createSlice({
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
     },
-    logout: () => initialState,
+    logout: (state) => {
+      localStorage.removeItem('token');
+      state.user = null;
+      state.token = null;
+    },
   },
 });
 
