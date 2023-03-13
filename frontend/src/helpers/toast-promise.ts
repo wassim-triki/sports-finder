@@ -1,18 +1,20 @@
-import { AxiosError, AxiosPromise, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-export const toastPromise = (promise: Promise<AxiosResponse<any, any>>) => {
+interface IError {
+  status: number;
+  data: { message: string };
+}
+export const toastPromise = (promise: Promise<any>) => {
   return toast.promise(promise, {
     pending: 'Loading',
     success: {
-      render({ data: res }) {
-        return `${res?.data.message}`;
+      render({ data }) {
+        return `${data.message}`;
       },
     },
     error: {
-      render: ({ data }) => {
-        if (data instanceof AxiosError) {
-          return `${data.response?.data.message}`;
-        }
+      render: ({ data: error }) => {
+        const err = error as IError;
+        return `${err.data.message ?? 'An unknown error occurred'}`;
       },
     },
   });

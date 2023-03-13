@@ -8,9 +8,15 @@
   }
 }
 
-#email,
+/* #email,
 #password,
 #repeatPassword,
 #phone {
+  grid-column: 1 /-1;
+} */
+.email,
+.password,
+.repeatPassword,
+.phone {
   grid-column: 1 /-1;
 }

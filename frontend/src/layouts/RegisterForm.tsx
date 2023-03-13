@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import InputField from '../components/InputField';
 import useSkipperContext from '../context/skipper-context';
 import { IInput } from '../types';
+import UserForm from './UserForm';
 
 interface Props {
   onSubmit: any;
@@ -16,27 +17,8 @@ const RegisterForm = ({ onSubmit, inputs, schema }: Props) => {
   const { activeStep, isStepOptional, handleBack, handleSkip, steps } =
     useSkipperContext();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
-
-  useEffect(() => {
-    // console.log(errors);
-  }, [errors]);
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-      <div className="grid grid-cols-2 gap-4">
-        {inputs.map((input, idx) => (
-          <InputField
-            key={input.name}
-            {...input}
-            register={register}
-            error={errors[input.name]}
-          />
-        ))}
-      </div>
+    <UserForm onSubmit={onSubmit} inputs={inputs} schema={schema}>
       <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
         <Button
           color="inherit"
@@ -56,7 +38,7 @@ const RegisterForm = ({ onSubmit, inputs, schema }: Props) => {
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
         </Button>
       </Box>
-    </form>
+    </UserForm>
   );
 };
 

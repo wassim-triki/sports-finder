@@ -23,7 +23,7 @@ class AuthController extends AbstractController
         $this->authService=$authService;
     }
     /**
-     * @Route("/api/register", name="app_registration",methods={"POST"})
+     * @Route("/api/auth/register", name="app_registration",methods={"POST"})
      */
     public function register(Request $request,SerializerInterface $serializer): Response{
             $userData=json_decode($request->getContent());
@@ -35,7 +35,7 @@ class AuthController extends AbstractController
             return $response;
     }
     /**
-     * @Route("/api/me", name="app_auth",methods={"GET"})
+     * @Route("/api/auth/me", name="app_auth",methods={"GET"})
      */
     public function getAuth(SerializerInterface $serializer): Response{
         $user = $this->getUser();

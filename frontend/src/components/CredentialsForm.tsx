@@ -12,6 +12,7 @@ import api from '../api/axios';
 import { toast } from 'react-toastify';
 import { registerUser } from '../api/user';
 import { toastPromise } from '../helpers/toast-promise';
+import { useRegisterUserMutation } from '../redux/api/authApi';
 const inputs: IInput[] = [
   {
     name: 'firstName',
@@ -48,12 +49,15 @@ const inputs: IInput[] = [
 const CredentialsForm = () => {
   const { handleNext } = useSkipperContext();
 
+  const [registerUser] = useRegisterUserMutation();
+
   const onSubmit = async (formValues: any) => {
     const { repeatPassword, ...userCredentials } = formValues;
-    const resp = await toastPromise(registerUser(userCredentials));
-    const { user } = resp.data;
+    const resp = await toastPromise(registerUser(userCredentials).unwrap());
+    const { user } = resp;
     console.log(user);
-    handleNext();
+
+    // handleNext();
   };
 
   return (

@@ -13,13 +13,16 @@ const InputField = ({
   error,
 }: Props) => {
   return (
-    <div id={`${name}`} className={`flex flex-col`}>
+    <div
+      // id={`${name}`}
+      className={` ${name} flex flex-col`}
+    >
       <label
         htmlFor={name}
         className={`${
           !error && 'text-slate-500'
         } font-medium focus-within:text-black transition-all ${
-          error && 'text-red-500 focus-within:text-red-500'
+          error ? 'text-red-500 focus-within:text-red-500' : ''
         }`}
       >
         {label}
