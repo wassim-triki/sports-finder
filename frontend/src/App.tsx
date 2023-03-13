@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { useAppSelector } from './redux/store';
 import LoginForm from './components/LoginForm';
 import { selectCurrentUser } from './redux/features/authSlice';
+import NoAuth from './components/NoAuth';
 
 function App() {
   const { auth } = useAppSelector((state) => state);
@@ -22,8 +23,22 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<LoginForm />} />
+            <Route
+              path="/register"
+              element={
+                <NoAuth>
+                  <Register />
+                </NoAuth>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <NoAuth>
+                  <LoginForm />
+                </NoAuth>
+              }
+            />
             <Route path="/" element={<Home />} />
           </Routes>
         </Router>

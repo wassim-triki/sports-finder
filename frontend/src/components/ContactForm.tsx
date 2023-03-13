@@ -81,7 +81,7 @@ const ContactForm = () => {
       };
       userData.userId = user.id;
       const resp = await toastPromise(updateUser(userData).unwrap());
-      // handleNext();
+      handleNext();
     }
   };
 
