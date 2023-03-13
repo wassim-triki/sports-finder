@@ -35,7 +35,7 @@ class UserService{
       $user->setAddress($address);
     }
 
-    $user->setPhone($userData->phone??null);
+    $user->setPhone($userData->phone);
 
     
 

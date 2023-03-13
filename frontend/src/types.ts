@@ -9,13 +9,13 @@ export interface IInput {
 }
 
 export interface Address {
-  id: string;
+  id?: string;
   state?: string;
   city?: string;
   street?: string;
   zipCode?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export type Role = 'ROLE_USER' | 'ROLE_ADMIN';

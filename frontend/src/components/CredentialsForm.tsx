@@ -55,9 +55,9 @@ const CredentialsForm = () => {
     const { repeatPassword, ...userCredentials } = formValues;
     const resp = await toastPromise(registerUser(userCredentials).unwrap());
     const { user } = resp;
-    console.log(user);
+    // console.log(user);
 
-    // handleNext();
+    handleNext();
   };
 
   return (

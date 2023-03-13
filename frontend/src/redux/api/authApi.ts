@@ -6,15 +6,23 @@ import { userApi } from './userApi';
 type GetMeResponse = {
   user: IUser;
 };
+type RegisterResponse = GetMeResponse;
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    registerUser: builder.mutation<IGenericResponse, any>({
+    registerUser: builder.mutation<RegisterResponse, any>({
       query: (body) => ({
         url: '/auth/register',
         method: 'POST',
         body,
       }),
+      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        try {
+          const resp = await queryFulfilled;
+          const { user } = resp.data;
+          dispatch(setUser(user));
+        } catch (error) {}
+      },
     }),
     loginUser: builder.mutation({
       query: (body) => ({

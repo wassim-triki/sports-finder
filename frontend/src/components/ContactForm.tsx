@@ -6,10 +6,13 @@ import RegisterForm from '../layouts/RegisterForm';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { contactSchema } from '../schema/contact-schema';
 import InputField from './InputField';
-import { IInput } from '../types';
+import { Address, IInput } from '../types';
 import removeEmpty from '../helpers/removeEmpty';
 import { toastPromise } from '../helpers/toast-promise';
 import { updateUser } from '../api/user';
+import { useUpdateUserMutation } from '../redux/api/userApi';
+import { selectCurrentUser } from '../redux/features/authSlice';
+import { useAppSelector } from '../redux/store';
 
 const inputs: IInput[] = [
   {
@@ -44,15 +47,42 @@ const inputs: IInput[] = [
   },
 ];
 
+interface UpdateBody {
+  phone?: string;
+  address?: Address;
+}
+export interface UpdateUserRequest {
+  userId?: string;
+  body: UpdateBody;
+}
+
 const ContactForm = () => {
   const { handleNext } = useSkipperContext();
 
+  const user = useAppSelector(selectCurrentUser);
+
+  const [updateUser] = useUpdateUserMutation();
+
   const onSubmit = async (formValues: any) => {
-    const userData = removeEmpty(formValues);
-    const resp = await toastPromise(updateUser(userData));
-    const { user } = resp.data;
-    console.log(user);
-    handleNext();
+    if (user) {
+      const { phone, state, city, street, zipCode } = formValues;
+      const updateBody = {
+        phone,
+        address: {
+          state,
+          city,
+          street,
+          zipCode,
+        },
+      };
+      const userData: UpdateUserRequest = {
+        userId: user.id,
+        body: updateBody,
+      };
+      userData.userId = user.id;
+      const resp = await toastPromise(updateUser(userData).unwrap());
+      // handleNext();
+    }
   };
 
   return (

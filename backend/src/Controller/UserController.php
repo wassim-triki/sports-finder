@@ -43,7 +43,7 @@ class UserController extends AbstractController
         $userData=json_decode($request->getContent());
         $user=$this->userService->updateUser($id,$userData);
 
-        $json=$serializer->serialize(['user'=>$user],'json');
+        $json=$serializer->serialize(['message'=>'Update successful.','user'=>$user],'json');
 
         $response = new Response($json,Response::HTTP_ACCEPTED,['Content-Type'=>'application/json']);
 

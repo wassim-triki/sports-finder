@@ -24,7 +24,6 @@ const inputs: IInput[] = [
 const LoginForm = () => {
   const [loginUser] = useLoginUserMutation();
 
-  const { auth } = useAppSelector((state) => state);
   const onSubmit = async (formValues: any) => {
     const credentials = {
       username: formValues.email,
@@ -33,9 +32,6 @@ const LoginForm = () => {
     await toastPromise(loginUser(credentials).unwrap());
   };
 
-  useEffect(() => {
-    console.log(auth);
-  }, [auth]);
   return (
     <Container>
       <div className="mx-auto mt-20 sm:max-w-[500px]">
