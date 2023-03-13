@@ -35,8 +35,18 @@ const LoginForm = () => {
   return (
     <Container>
       <div className="mx-auto mt-20 sm:max-w-[500px]">
+        <h3 className="text-5xl mb-10 text-center font-medium">Login</h3>
         <UserForm onSubmit={onSubmit} inputs={inputs} schema={loginSchema}>
-          <Button type="submit">Login</Button>
+          <Button
+            variant="outlined"
+            sx={{
+              py: 1,
+              mt: 2,
+            }}
+            type="submit"
+          >
+            Login
+          </Button>
         </UserForm>
       </div>
     </Container>

@@ -23,6 +23,7 @@ export default function Register() {
   return (
     <Container>
       <div className="mx-auto mt-20 sm:max-w-[500px]">
+        <h3 className="text-5xl mb-10 text-center font-medium">Register</h3>
         <Box sx={{ width: '100%', margin: 'auto' }}>
           <Stepper activeStep={activeStep}>
             {steps.map((label, index) => {

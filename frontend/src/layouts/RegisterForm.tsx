@@ -29,12 +29,12 @@ const RegisterForm = ({ onSubmit, inputs, schema }: Props) => {
           Back
         </Button>
         <Box sx={{ flex: '1 1 auto' }} />
-        {isStepOptional(activeStep) && (
+        {/* {isStepOptional(activeStep) && (
           <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
             Skip
           </Button>
-        )}
-        <Button type="submit">
+        )} */}
+        <Button variant="contained" type="submit">
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
         </Button>
       </Box>
